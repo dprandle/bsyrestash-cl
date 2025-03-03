@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "../../.emacs.d/backup/!home!dprandle!projects!bsyrestash!src!App.tsx~"]
+  "include": ["src", "../../.emacs.d/backup/!home!dprandle!projects!bsyrestash!src!App.tsx~", "../../.emacs.d/backup/!home!dprandle!projects!bsyrestash-cl!src!dprandle@dprandle-hp.3647:1740922768~"]
 }
