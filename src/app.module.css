@@ -1,4 +1,49 @@
 /* The root element - basically global setting */
-.scooby {
-    color: red;
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #222;
+    margin: 0;
+    padding: 5px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+}
+
+/* .navbar a:hover { */
+/*     background-color: #555599; */
+/*     color: #ffeeee; */
+/* } */
+
+.navbar-item {
+    padding: 20px;
+}
+
+.navbar-item:hover {
+    background-color: #555599;
+    color: #ffeeee;
+}
+
+.navbarleft {
+    margin: 0;
+    padding: 0;
+}
+
+.navbarcenter ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0;
+    padding: 0;
+}
+
+.navbarright {
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    margin: 0;
 }
