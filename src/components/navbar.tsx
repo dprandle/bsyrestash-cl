@@ -1,11 +1,12 @@
-import styles from './navbar.module.css'
+import styles from './navbar.module.css';
+import {Link} from 'react-router-dom';
 
 function Navbar() {
   return (
     <nav className={styles.navbar}>
       <div className={styles.navbar_left}>
         <ul>
-          <li className={styles.navbar_item}><a href="/">Home</a></li>
+          <li className={styles.navbar_item}><Link to="/">Home</Link></li>
         </ul>
       </div>
       <div className={styles.navbar_center}>
@@ -17,7 +18,7 @@ function Navbar() {
       </div>
       <div className={styles.navbar_right}>
         <ul>
-          <li className={styles.navbar_sign_in}><a href="/sign-in">Sign in</a></li>
+          <li className={styles.navbar_sign_in}><a href="/login">Sign in</a></li>
         </ul>
       </div>
     </nav>
