@@ -19,7 +19,6 @@
 
 .navbar_item:hover, .navbar_sign_in:hover {
     background-color: #555599;
-    text-decoration: underline;
 }
 
 .navbar_sign_in {
