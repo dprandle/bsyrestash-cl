@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from "../contexts/auth";
+import { getUser, useAuth } from "../contexts/auth";
 import styles from "./login.module.css";
 
 function Login() {
@@ -9,6 +9,8 @@ function Login() {
   
   const handle_login = (e: React.SyntheticEvent) => {
     e.preventDefault();
+    const user_promise = getUser(username);
+    //auth.login(user_promise.then);
     // Handle login logic here
     console.log('Logging in with:', { username, password });
   };
