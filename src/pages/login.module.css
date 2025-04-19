@@ -1,3 +1,58 @@
-.login_page {
-  background-color: #bbbbff;
+.login_container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.input_container {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login_button {
+  width: 100%;
+  padding: 10px;
+  background-color: #0079bf;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login_button:hover {
+  background-color: #005a8c;
+}
+
+.create_account {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.create_account a {
+  color: #0079bf;
+  text-decoration: none;
+}
+
+.create_account a:hover {
+  text-decoration: underline;
 }

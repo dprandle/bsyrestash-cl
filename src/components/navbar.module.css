@@ -12,10 +12,6 @@
   text-decoration: none;
 }
 
-a.active {
-  text-decoration: underline;
-}
-
 .navbar_item,
 .navbar_sign_in {
   padding: 10px;
@@ -28,15 +24,6 @@ a.active {
   background-color: #555599;
 }
 
-.navbar_sign_in {
-  background-color: #006600;
-}
-
-.navbar_left {
-  margin: 0;
-  padding: 0;
-}
-
 .navbar ul {
   list-style-type: none;
   display: flex;
@@ -45,7 +32,21 @@ a.active {
   padding: 0;
 }
 
+.navbar_left {
+  margin: 0;
+  padding: 0;
+}
+
+.navbar_mid {
+  margin: 0;
+  padding: 0;
+}
+
 .navbar_right {
   margin: 0;
   padding: 0;
+}
+
+.navbar_sign_in {
+  background-color: #006600;
 }
