@@ -85,6 +85,10 @@ export const MOCK_USERS: auth_user[] = [
 ];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  // Context is basically a way to bundle top level variables, like these listed below, in a
+  // context which can be accessed by any component by passing the context to useContext. The only thing
+  // that makes the variables in the context special at all is that components that "depend" on any of the
+  // variables in the context will be re-rendered if any of the variables change.
   const [user, setUser] = useState<auth_user | null>(null); // or token-based
   const login = (user: auth_user) => setUser(user);
   const logout = () => setUser(null);
