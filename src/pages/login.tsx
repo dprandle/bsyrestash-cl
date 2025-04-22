@@ -3,8 +3,9 @@ import { fetchUser as fetchUser, useAuth } from "../contexts/auth";
 import styles from "./login.module.css";
 
 function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, set_username] = useState("");
+  const [password, set_password] = useState("");
+  const [login_failed, set_login_failed] = useState("");
   const auth = useAuth();
 
   const handle_login = async (e: React.SyntheticEvent) => {
@@ -17,9 +18,11 @@ function Login() {
           auth.login(user);
           console.log("Login successful:", user);
         } else {
+          set_login_failed("password");
           console.log("Invalid password");
         }
       } else {
+        set_login_failed("username");
         console.log("Invalid user");
       }
     } catch (err) {
@@ -30,13 +33,20 @@ function Login() {
     console.log("Logging in with:", { username, password });
   };
 
+  const login_failed_div = (
+    <div className={styles.error_message}>
+      <p>Login failed: Incorrect {login_failed}</p>
+    </div>
+  );
+
   return (
     <div className={styles.login_container}>
       <h1>Log In</h1>
+      {login_failed.length !== 0 && login_failed_div}
       <form onSubmit={handle_login}>
         <div className={styles.input_container}>
           <label htmlFor="username">Username</label>
-          <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          <input type="text" id="username" value={username} onChange={(e) => set_username(e.target.value)} required />
         </div>
         <div className={styles.input_container}>
           <label htmlFor="password">Password</label>
@@ -44,7 +54,7 @@ function Login() {
             type="password"
             id="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => set_password(e.target.value)}
             required
           />
         </div>
