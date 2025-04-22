@@ -102,11 +102,16 @@ export function useAuth() {
   return context!;
 }
 
-export async function getUser(username: string) {
+export async function fetchUser(username: string) {
   if (USE_MOCK_BACKEND) {
-    const mockUser = MOCK_USERS.filter((user) => user.username === username);
+    let mock_user = null;
+    const ind = MOCK_USERS.findIndex( (user) => user.username === username);
+    if (ind != -1) {
+      mock_user = MOCK_USERS[ind];
+    }
+    // Simulate a network request with a delay
     return new Promise((resolve) => {
-      setTimeout(() => resolve(mockUser), 1000); // Simulating a network delay
+      setTimeout(() => resolve(mock_user), 1000);
     });
   } else {
     try {
