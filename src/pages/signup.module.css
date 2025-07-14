@@ -1,0 +1,80 @@
+.container {
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input {
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+}
+
+.submit_button {
+  background-color: #0079bf;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.submit_button:hover {
+  background-color: #00599f;
+}
+
+.separator {
+  padding: 20px 0px;
+  text-align: center;
+  font-size: 0.75em;
+}
+
+.social_buttons button {
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+}
+
+.google_button {
+  background-color: #db4437;
+  color: white;
+}
+
+.google_button:hover {
+  background-color: #ab3427;
+}
+
+.facebook_button {
+  background-color: #3b5998;
+  color: white;
+}
+
+.facebook_button:hover {
+  background-color: #2b4988;
+}
+
+.apple_button {
+  background-color: black;
+  color: white;
+}
