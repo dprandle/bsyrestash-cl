@@ -1,6 +1,6 @@
 import styles from "./navbar.module.css";
 import { NavLink } from "react-router-dom";
-import {useAuth} from "../contexts/auth";
+import { useAuth } from "../contexts/auth";
 
 function NavbarLeft() {
   return (
@@ -42,8 +42,8 @@ function NavbarMid() {
 
 function NavbarRight() {
   const auth = useAuth();
-  const btn_txt = (auth.user !== null) ? "Sign out" : "Sign in";
-  const btn_target = (auth.user !== null) ? "/logout" : "/login";
+  const btn_txt = auth.user !== null ? "Sign out" : "Sign in";
+  const btn_target = auth.user !== null ? "/logout" : "/login";
   return (
     <div className={styles.navbar_right}>
       <ul>

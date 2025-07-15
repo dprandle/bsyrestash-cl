@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { fetchUser as fetchUser, useAuth } from "../contexts/auth";
+
 import styles from "./login.module.css";
 
 function Login() {
@@ -64,7 +66,7 @@ function Login() {
       </form>
       <div className={styles.create_account}>
         <p>
-          Don't have an account? <a href="/signup">Create an account</a>
+          Don't have an account? <NavLink to="/signup">Create an account</NavLink>
         </p>
       </div>
     </div>
