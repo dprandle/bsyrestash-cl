@@ -41,9 +41,9 @@ function NavbarMid() {
 }
 
 function NavbarRight() {
-  const auth = useAuth();
-  const btn_txt = auth.user !== null ? "Sign out" : "Sign in";
-  const btn_target = auth.user !== null ? "/logout" : "/login";
+  const {user} = useAuth();
+  const btn_txt = user !== null ? "Sign out" : "Sign in";
+  const btn_target = user !== null ? "/logout" : "/login";
   return (
     <div className={styles.navbar_right}>
       <ul>
