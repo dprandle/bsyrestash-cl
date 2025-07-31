@@ -1,38 +1,28 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { fetchUser as fetchUser, useAuth } from "../contexts/auth";
-
+import { server_login/*, useAuth*/ } from "../contexts/auth";
+ 
 import styles from "./login.module.css";
 
 function Login() {
   const [username, set_username] = useState("");
   const [password, set_password] = useState("");
-  const [login_failed, set_login_failed] = useState("");
-  const auth = useAuth();
+  const [login_failed, _set_login_failed] = useState("");
+  //const auth = useAuth();
 
   const handle_login = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    try {
-      const user = await fetchUser(username);
-      if (user) {
-        // Check if the password matches
-        if (user.password === password) {
-          auth.login(user);
-          console.log("Login successful:", user);
-        } else {
-          set_login_failed("password");
-          console.log("Invalid password");
-        }
-      } else {
-        set_login_failed("username");
-        console.log("Invalid user");
-      }
-    } catch (err) {
-      console.log("Error: ", err);
-    }
-    //auth.login(user_promise.then);
-    // Handle login logic here
-    console.log("Logging in with:", { username, password });
+
+    const on_login_success = (resp: Response) => {
+      console.log("Success", resp);
+    };
+
+    const on_login_fail = (reason: any) => {
+      console.log("Fail", reason);
+    };
+
+    const resp_promise = server_login({ username, password });
+    resp_promise.then(on_login_success, on_login_fail);
   };
 
   const login_failed_div = (
