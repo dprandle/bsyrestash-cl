@@ -10,9 +10,9 @@ function Login() {
   const [login_failed, _set_login_failed] = useState("");
   //const auth = useAuth();
 
-  const handle_login = async (e: React.SyntheticEvent) => {
+  const handle_login = (e: React.SyntheticEvent) => {
     e.preventDefault();
-
+    
     const on_login_success = (resp: Response) => {
       console.log("Success", resp);
     };
