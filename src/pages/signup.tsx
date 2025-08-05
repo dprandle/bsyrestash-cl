@@ -1,52 +1,70 @@
-//import { useState } from "react";
+import { useState } from "react";
+import { server_create_user, auth_new_user, auth_credentials } from "../contexts/auth";
 import styles from "./signup.module.css";
 
-async function handle_create_user(event: React.FormEvent<HTMLFormElement>) {
-  event.preventDefault(); // Prevent the default form submission
+interface err_response {
+  message: string;
+}
 
-  if (!event.target) {
-    return;
-  }
+function do_login(ucreds: auth_credentials) {
+  
+}
 
-  // Gather form data
-  const form_data = new FormData(event.currentTarget);
-  const data = {
-    first_name: form_data.get("first_name"),
-    last_name: form_data.get("last_name"),
-    email: form_data.get("email"),
-    password: form_data.get("password"),
-  };
-
-  try {
-    // Send a POST request with JSON data
-    const response = await fetch("/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (response.ok) {
-      const result = await response.json();
-      console.log("User created:", result);
+function try_to_create_user(udata: auth_new_user, set_create_user_failed: any) {
+  const on_response_finish = (resp: Response) => {
+    if (resp.ok) {
+      const ucreds: auth_credentials = {
+        username: udata.username,
+        password: udata.password,
+      };
+      do_login(ucreds);
     } else {
-      console.error("Error creating user:", response.statusText);
+      const err: 
+      const str = "User creation failed: " + ;
+      
+      set_create_user_failed()
     }
-  } catch (error) {
-    console.error("Network error:", error);
-  }
+  };
+  const on_response_fail = (reason: any) => {
+    const str = "Failed to create user: " + reason;
+    wlog(str);
+    set_create_user_failed(str);
+  };
+  const prom = server_create_user(udata);
+  prom.then(on_response_finish, on_response_fail);
 }
 
 export function Signup() {
+  const [create_user_failed, set_create_user_failed] = useState("");
+
+  const handle_create_user = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent the default form submission
+    asrt(event.target);
+
+    // Gather form data
+    const form_data = new FormData(event.currentTarget);
+    const data: auth_new_user = {
+      email: form_data.get("email") as string,
+      password: form_data.get("password") as string,
+      username: form_data.get("username") as string,
+    };
+    try_to_create_user(data, set_create_user_failed);
+  };
+
+  const create_user_failed_div = (
+    <div className={styles.error_message}>
+      <p>Login failed: {create_user_failed}</p>
+    </div>
+  );
+
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Sign Up</h1>
+      {create_user_failed.length !== 0 && create_user_failed_div}
       <form className={styles.form} onSubmit={handle_create_user}>
-        <input type="text" name="first_name" placeholder="First Name" className={styles.input} required />
-        <input type="text" name="last_name" placeholder="Last Name" className={styles.input} required />
         <input type="email" name="email" placeholder="Email" className={styles.input} required />
         <input type="password" name="password" placeholder="Password" className={styles.input} required />
+        <input type="text" name="username" placeholder="Username" className={styles.input} required />
         <button type="submit" className={styles.submit_button}>
           Create account
         </button>
@@ -60,4 +78,3 @@ export function Signup() {
     </div>
   );
 }
-

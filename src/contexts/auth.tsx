@@ -6,16 +6,22 @@ export interface auth_user {
   first_name: string;
   last_name: string;
   email: string;
-};
+}
 
-interface auth_credentials {
+export interface auth_credentials {
   username: string;
   password: string;
 }
 
-interface auth_ctxt {
+export interface auth_ctxt {
   user: auth_user | null;
   set_user: (user: auth_user | null) => void;
+}
+
+export interface auth_new_user {
+  email: string;
+  password: string;
+  username: string;
 }
 
 const auth_ctxt = createContext<auth_ctxt | null>(null);
@@ -43,7 +49,19 @@ export function server_login(creds: auth_credentials): Promise<Response> {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(creds),
-    signal: AbortSignal.timeout(5000)
+    signal: AbortSignal.timeout(5000),
+  });
+  return response;
+}
+
+export function server_create_user(new_user: auth_new_user): Promise<Response> {
+  const response = fetch("/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(new_user),
+    signal: AbortSignal.timeout(5000),
   });
   return response;
 }
