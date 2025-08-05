@@ -38,7 +38,7 @@ async function handle_create_user(event: React.FormEvent<HTMLFormElement>) {
   }
 }
 
-function Signup() {
+export function Signup() {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Sign Up</h1>
@@ -60,4 +60,4 @@ function Signup() {
     </div>
   );
 }
-export default Signup;
+

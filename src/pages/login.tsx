@@ -1,33 +1,61 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { server_login/*, useAuth*/ } from "../contexts/auth";
- 
+import { NavLink, useNavigate } from "react-router-dom";
+import { server_login, useAuth, auth_user } from "../contexts/auth";
+
 import styles from "./login.module.css";
 
-function Login() {
+interface login_response {
+  message: string;
+  user: auth_user;
+}
+
+interface err_response {
+  message: string;
+}
+
+export function Login() {
   const [username, set_username] = useState("");
   const [password, set_password] = useState("");
-  const [login_failed, _set_login_failed] = useState("");
-  //const auth = useAuth();
+  const [login_failed, set_login_failed] = useState("");
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   const handle_login = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    
-    const on_login_success = (resp: Response) => {
-      console.log("Success", resp);
+
+    const on_fetch_completed = (resp: Response) => {
+      const on_json_success = (data: any) => {
+        if (resp.ok) {
+          const lresp: login_response = data;
+          auth.set_user(lresp.user);
+          ilog("Setting logged in user to ", lresp.user);
+          navigate("/dashboard");
+        } else {
+          const eresp: err_response = data;
+          wlog(eresp.message);
+          set_login_failed(eresp.message);
+        }
+      };
+      const on_json_fail = (reason: any) => {
+        elog("Failed to parse json body: ", reason);
+        set_login_failed(reason);
+      };
+      const json_promise = resp.json();
+      json_promise.then(on_json_success, on_json_fail);
     };
 
-    const on_login_fail = (reason: any) => {
-      console.log("Fail", reason);
+    const on_fetch_failed = (reason: any) => {
+      elog("Fail", reason);
+      set_login_failed(reason);
     };
 
     const resp_promise = server_login({ username, password });
-    resp_promise.then(on_login_success, on_login_fail);
+    resp_promise.then(on_fetch_completed, on_fetch_failed);
   };
 
   const login_failed_div = (
     <div className={styles.error_message}>
-      <p>Login failed: Incorrect {login_failed}</p>
+      <p>Login failed: {login_failed}</p>
     </div>
   );
 
@@ -62,4 +90,3 @@ function Login() {
     </div>
   );
 }
-export default Login;

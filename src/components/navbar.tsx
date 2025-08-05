@@ -57,7 +57,7 @@ function NavbarRight() {
   );
 }
 
-function Navbar() {
+export function Navbar() {
   return (
     <nav className={styles.navbar}>
       <NavbarLeft />
@@ -66,5 +66,3 @@ function Navbar() {
     </nav>
   );
 }
-
-export default Navbar;

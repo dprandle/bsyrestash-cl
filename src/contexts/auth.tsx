@@ -1,14 +1,12 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
-interface auth_user {
+export interface auth_user {
   id: string;
   username: string;
   first_name: string;
   last_name: string;
   email: string;
-  phone: string;
-  role: number;
-}
+};
 
 interface auth_credentials {
   username: string;
@@ -48,13 +46,4 @@ export function server_login(creds: auth_credentials): Promise<Response> {
     signal: AbortSignal.timeout(5000)
   });
   return response;
-}
-
-export async function fetchUser(username: string) {
-  try {
-    const response = await fetch("/api/users?username=" + username);
-    return await response.json();
-  } catch (error) {
-    console.error("Error: ", error);
-  }
 }
