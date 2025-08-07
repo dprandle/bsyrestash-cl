@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { server_login, useAuth, auth_user } from "../contexts/auth";
 
@@ -13,35 +13,37 @@ interface err_response {
   message: string;
 }
 
+let rerendered = 0;
 export function Login() {
-  const [username, set_username] = useState("");
-  const [password, set_password] = useState("");
   const [login_failed, set_login_failed] = useState("");
   const auth = useAuth();
   const navigate = useNavigate();
+  const formRef = useRef<HTMLFormElement | null>(null);
+  ilog("Rendered ", ++rerendered, " times");
 
   const handle_login = (e: React.SyntheticEvent) => {
     e.preventDefault();
-
+    const form = formRef.current!;    
     const on_fetch_completed = (resp: Response) => {
-      const on_json_success = (data: any) => {
+      const on_parse_json_resolved = (data: any) => {
         if (resp.ok) {
-          const lresp: login_response = data;
+          const lresp = data as login_response;
           auth.set_user(lresp.user);
           ilog("Setting logged in user to ", lresp.user);
           navigate("/dashboard");
+          form.submit();
         } else {
-          const eresp: err_response = data;
+          const eresp = data as err_response;
           wlog(eresp.message);
           set_login_failed(eresp.message);
         }
       };
-      const on_json_fail = (reason: any) => {
+      const on_parse_json_rejected = (reason: any) => {
         elog("Failed to parse json body: ", reason);
         set_login_failed(reason);
       };
       const json_promise = resp.json();
-      json_promise.then(on_json_success, on_json_fail);
+      json_promise.then(on_parse_json_resolved, on_parse_json_rejected);
     };
 
     const on_fetch_failed = (reason: any) => {
@@ -49,37 +51,43 @@ export function Login() {
       set_login_failed(reason);
     };
 
-    const resp_promise = server_login({ username, password });
+    const resp_promise = server_login({ username: form.username.value, pwd: form.password.value });
     resp_promise.then(on_fetch_completed, on_fetch_failed);
   };
 
   const login_failed_div = (
     <div className={styles.error_message}>
-      <p>Login failed: {login_failed}</p>
+      <p>Sign in failed: {login_failed}</p>
     </div>
   );
 
   return (
     <div className={styles.login_container}>
-      <h1>Log In</h1>
+      <h1>Sign In</h1>
       {login_failed.length !== 0 && login_failed_div}
-      <form onSubmit={handle_login}>
+      <form ref={formRef} action="/api/dummy-login" method="POST" onSubmit={handle_login}>
         <div className={styles.input_container}>
           <label htmlFor="username">Username</label>
-          <input type="text" id="username" value={username} onChange={(e) => set_username(e.target.value)} required />
+          <input
+            type="text"
+            id="username"
+            name="username"
+            autoComplete="username"
+            required
+          />
         </div>
         <div className={styles.input_container}>
           <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={(e) => set_password(e.target.value)}
+            name="password"
+            autoComplete="current-password"
             required
           />
         </div>
         <button type="submit" className={styles.login_button}>
-          Log In
+          Sign In
         </button>
       </form>
       <div className={styles.create_account}>

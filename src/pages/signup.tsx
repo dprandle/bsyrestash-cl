@@ -1,41 +1,63 @@
 import { useState } from "react";
-import { server_create_user, auth_new_user, auth_credentials } from "../contexts/auth";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+import { server_create_user_and_login, auth_new_user, auth_user, auth_ctxt, useAuth } from "../contexts/auth";
 import styles from "./signup.module.css";
 
 interface err_response {
   message: string;
 }
 
-function do_login(ucreds: auth_credentials) {
-  
+interface create_user_and_login_resp {
+  message: string;
+  user: auth_user;
 }
 
-function try_to_create_user(udata: auth_new_user, set_create_user_failed: any) {
-  const on_response_finish = (resp: Response) => {
-    if (resp.ok) {
-      const ucreds: auth_credentials = {
-        username: udata.username,
-        password: udata.password,
-      };
-      do_login(ucreds);
-    } else {
-      const err: 
-      const str = "User creation failed: " + ;
-      
-      set_create_user_failed()
-    }
+function try_to_create_user(udata: auth_new_user, set_create_user_failed: any, auth: auth_ctxt, nav: NavigateFunction) {
+  const on_create_user_resolve = (resp: Response) => {
+    const on_parse_json_resolved = (jsdata: any) => {
+      if (resp.ok) {
+        const parsed_resp = jsdata as create_user_and_login_resp;
+        ilog("Server responded: ", parsed_resp.message);
+        auth.set_user(parsed_resp.user);
+        set_create_user_failed("");
+        nav("/dashboard");
+      } else {
+        const parsed_resp = jsdata as err_response;
+        wlog("Login failed: ", parsed_resp.message);
+        set_create_user_failed(parsed_resp.message);
+      }
+    };
+    const on_parse_json_rejected = (reason: any) => {
+      let str = "";
+      if ("message" in reason && typeof reason.message === "string") {
+        str = "Parsing json failed: " + reason.message;
+      } else if (typeof reason === "string") {
+        str = "Parsing json failed: " + reason;
+      }
+      wlog(str);
+      set_create_user_failed(str);
+    };
+    const json_promise = resp.json();
+    json_promise.then(on_parse_json_resolved, on_parse_json_rejected);
   };
-  const on_response_fail = (reason: any) => {
-    const str = "Failed to create user: " + reason;
+  const on_create_user_reject = (reason: any) => {
+    let str = "";
+    if ("message" in reason && typeof reason.message === "string") {
+      str = "Failed to create user: " + reason.message;
+    } else if (typeof reason === "string") {
+      str = "Failed to create user: " + reason;
+    }
     wlog(str);
     set_create_user_failed(str);
   };
-  const prom = server_create_user(udata);
-  prom.then(on_response_finish, on_response_fail);
+  const prom = server_create_user_and_login(udata);
+  prom.then(on_create_user_resolve, on_create_user_reject);
 }
 
 export function Signup() {
   const [create_user_failed, set_create_user_failed] = useState("");
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   const handle_create_user = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent the default form submission
@@ -45,15 +67,15 @@ export function Signup() {
     const form_data = new FormData(event.currentTarget);
     const data: auth_new_user = {
       email: form_data.get("email") as string,
-      password: form_data.get("password") as string,
+      pwd: form_data.get("password") as string,
       username: form_data.get("username") as string,
     };
-    try_to_create_user(data, set_create_user_failed);
+    try_to_create_user(data, set_create_user_failed, auth, navigate);
   };
 
   const create_user_failed_div = (
     <div className={styles.error_message}>
-      <p>Login failed: {create_user_failed}</p>
+      <p>{create_user_failed}</p>
     </div>
   );
 
@@ -62,9 +84,9 @@ export function Signup() {
       <h1 className={styles.title}>Sign Up</h1>
       {create_user_failed.length !== 0 && create_user_failed_div}
       <form className={styles.form} onSubmit={handle_create_user}>
-        <input type="email" name="email" placeholder="Email" className={styles.input} required />
-        <input type="password" name="password" placeholder="Password" className={styles.input} required />
-        <input type="text" name="username" placeholder="Username" className={styles.input} required />
+        <input type="email" name="email" placeholder="Email" autoComplete="email" className={styles.input} required />
+        <input type="password" name="password" placeholder="Password" autoComplete="new-password" className={styles.input} required />
+        <input type="text" name="username" placeholder="Username" autoComplete="username" className={styles.input} required />
         <button type="submit" className={styles.submit_button}>
           Create account
         </button>

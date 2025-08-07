@@ -1,15 +1,15 @@
-import { Navigate } from "react-router-dom";
-import { auth_user } from "../contexts/auth";
+import { Navigate, Outlet } from "react-router-dom";
+import { auth_ctxt } from "../contexts/auth";
 
 interface Props {
-  user: auth_user | null;
-  children: React.ReactNode;
+  auth: auth_ctxt;
 }
 
-export const ProtectedRoute = ({ user, children }: Props) => {
-  if (!user) {
-    // If user is not authenticated go to login page
-    return <Navigate to="/login" />;
+export const ProtectedRoute = ({ auth }: Props) => {
+  ilog("Protected route");
+  if (auth.loading) {
+    // Render a loading indicator while auth status is being checked
+    return <div>Loading...</div>;
   }
-  return children;
+  return !auth.user ? <Navigate to="/login" /> : <Outlet />;
 };

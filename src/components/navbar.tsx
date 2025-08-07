@@ -1,6 +1,6 @@
 import styles from "./navbar.module.css";
-import { NavLink } from "react-router-dom";
-import { useAuth } from "../contexts/auth";
+import { NavLink, useNavigate } from "react-router-dom";
+import { server_logout, useAuth } from "../contexts/auth";
 
 function NavbarLeft() {
   return (
@@ -41,17 +41,36 @@ function NavbarMid() {
 }
 
 function NavbarRight() {
-  const {user} = useAuth();
-  const btn_txt = user !== null ? "Sign out" : "Sign in";
-  const btn_target = user !== null ? "/logout" : "/login";
+  const { user, set_user } = useAuth();
+  const navigate = useNavigate();
+
+  const on_click_func = () => {
+    const on_logout_resolved = (_res: Response) => {
+      set_user(null);
+      navigate("");
+    };
+    const on_logout_rejected = (reason: any) => {
+      wlog("Error with logging out: ", reason);
+    };
+    server_logout().then(on_logout_resolved, on_logout_rejected);
+  };
+
+  const login_element = (
+    <NavLink to="/login" className={styles.navbar_sign_in}>
+      Sign in
+    </NavLink>
+  );
+
+  const logout_element = (
+    <div onClick={on_click_func} className={styles.navbar_sign_in}>
+      Sign out
+    </div>
+  );
+
   return (
     <div className={styles.navbar_right}>
       <ul>
-        <li>
-          <NavLink to={btn_target} className={styles.navbar_sign_in}>
-            {btn_txt}
-          </NavLink>
-        </li>
+        <li>{user ? logout_element : login_element}</li>
       </ul>
     </div>
   );

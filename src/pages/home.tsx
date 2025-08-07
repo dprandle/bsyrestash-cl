@@ -1,4 +1,10 @@
-export function Home() {
-  return <h2>Home</h2>;
-}
+import { Navbar } from "../components/navbar";
 
+export function Home() {
+  return (
+    <>
+      <Navbar />
+      <h2>Home</h2>;
+    </>
+  );
+}

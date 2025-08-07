@@ -1,4 +1,10 @@
-export function Dashboard() {
-  return <h2>Dashboard</h2>;
-}
+import { Navbar } from "../components/navbar";
 
+export function Dashboard() {
+  return (
+    <>
+      <Navbar />
+      <h2>Dashboard</h2>;
+    </>
+  );
+}
