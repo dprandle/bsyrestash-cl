@@ -4,7 +4,7 @@ export function About() {
   return (
     <>
       <Navbar />
-      <h2>About</h2>;
+      <h2>About</h2>
     </>
   );
 }

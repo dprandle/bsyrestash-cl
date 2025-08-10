@@ -4,7 +4,7 @@ export function Products() {
   return (
     <>
       <Navbar />
-      <h2>Products</h2>;
+      <h2>Products</h2>
     </>
   );
 }
