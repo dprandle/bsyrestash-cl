@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { server_create_user_and_login, auth_new_user, auth_user, auth_ctxt, useAuth } from "../contexts/auth";
+import { PAGE_URIS } from "../uris";
 import styles from "./signup.module.css";
 
 interface err_response {
@@ -20,7 +21,7 @@ function try_to_create_user(udata: auth_new_user, set_create_user_failed: any, a
         ilog("Server responded: ", parsed_resp.message);
         auth.set_user(parsed_resp.user);
         set_create_user_failed("");
-        nav("/dashboard");
+        nav(PAGE_URIS.dashboard);
       } else {
         const parsed_resp = jsdata as err_response;
         wlog("Login failed: ", parsed_resp.message);
@@ -85,8 +86,22 @@ export function Signup() {
       {create_user_failed.length !== 0 && create_user_failed_div}
       <form className={styles.form} onSubmit={handle_create_user}>
         <input type="email" name="email" placeholder="Email" autoComplete="email" className={styles.input} required />
-        <input type="password" name="password" placeholder="Password" autoComplete="new-password" className={styles.input} required />
-        <input type="text" name="username" placeholder="Username" autoComplete="username" className={styles.input} required />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          autoComplete="new-password"
+          className={styles.input}
+          required
+        />
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          autoComplete="username"
+          className={styles.input}
+          required
+        />
         <button type="submit" className={styles.submit_button}>
           Create account
         </button>

@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { server_login, useAuth, auth_user } from "../contexts/auth";
+import { API_URIS, PAGE_URIS } from "../uris";
 
 import styles from "./login.module.css";
 
@@ -12,6 +13,7 @@ interface login_response {
 interface err_response {
   message: string;
 }
+
 
 let rerendered = 0;
 export function Login() {
@@ -30,7 +32,7 @@ export function Login() {
           const lresp = data as login_response;
           auth.set_user(lresp.user);
           ilog("Setting logged in user to ", lresp.user);
-          navigate("/dashboard");
+          navigate(PAGE_URIS.dashboard);
           form.submit();
         } else {
           const eresp = data as err_response;
@@ -65,7 +67,7 @@ export function Login() {
     <div className={styles.login_container}>
       <h1>Sign In</h1>
       {login_failed.length !== 0 && login_failed_div}
-      <form ref={formRef} action="/api/dummy-login" method="POST" onSubmit={handle_login}>
+      <form ref={formRef} action={API_URIS.dummy_form} method="POST" onSubmit={handle_login}>
         <div className={styles.input_container}>
           <label htmlFor="username">Username</label>
           <input

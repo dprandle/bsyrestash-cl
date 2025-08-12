@@ -1,13 +1,14 @@
 import styles from "./navbar.module.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { server_logout, useAuth } from "../contexts/auth";
+import { PAGE_URIS } from "../uris";
 
 function NavbarLeft() {
   return (
     <div className={styles.navbar_left}>
       <ul>
         <li>
-          <NavLink to="/" className={styles.navbar_item}>
+          <NavLink to={PAGE_URIS.home} className={styles.navbar_item}>
             Home
           </NavLink>
         </li>
@@ -21,17 +22,17 @@ function NavbarMid() {
     <div className={styles.navbar_mid}>
       <ul>
         <li>
-          <NavLink to="/products" className={styles.navbar_item}>
+          <NavLink to={PAGE_URIS.products} className={styles.navbar_item}>
             Products
           </NavLink>
         </li>
         <li>
-          <NavLink to="/about" className={styles.navbar_item}>
+          <NavLink to={PAGE_URIS.about} className={styles.navbar_item}>
             About
           </NavLink>
         </li>
         <li>
-          <NavLink to="/contact" className={styles.navbar_item}>
+          <NavLink to={PAGE_URIS.contact} className={styles.navbar_item}>
             Contact
           </NavLink>
         </li>
@@ -47,7 +48,7 @@ function NavbarRight() {
   const on_click_func = () => {
     const on_logout_resolved = (_res: Response) => {
       set_user(null);
-      navigate("");
+      navigate(PAGE_URIS.home);
     };
     const on_logout_rejected = (reason: any) => {
       wlog("Error with logging out: ", reason);
@@ -56,7 +57,7 @@ function NavbarRight() {
   };
 
   const login_element = (
-    <NavLink to="/login" className={styles.navbar_sign_in}>
+    <NavLink to={PAGE_URIS.login} className={styles.navbar_sign_in}>
       Sign in
     </NavLink>
   );

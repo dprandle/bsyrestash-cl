@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
+import { API_URIS } from "../uris";
 
 export interface auth_user {
   id: string;
@@ -35,7 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // variables in the context will be re-rendered if any of the variables change.
   const [user, set_user] = useState<auth_user | null>(null);
   const [loading, set_loading] = useState<boolean>(true);
-  const authctxt: auth_ctxt = {user: user, set_user: set_user, loading: loading, set_loading: set_loading};
+  const authctxt: auth_ctxt = { user: user, set_user: set_user, loading: loading, set_loading: set_loading };
   return <AuthContext value={authctxt}>{children}</AuthContext>;
 }
 
@@ -47,7 +48,7 @@ export function useAuth() {
 }
 
 export function server_login(creds: auth_credentials): Promise<Response> {
-  const response = fetch("/api/login", {
+  const response = fetch(API_URIS.login, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -59,7 +60,7 @@ export function server_login(creds: auth_credentials): Promise<Response> {
 }
 
 export function server_logout(): Promise<Response> {
-  const response = fetch("/api/logout", {
+  const response = fetch(API_URIS.logout, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -70,7 +71,7 @@ export function server_logout(): Promise<Response> {
 }
 
 export function server_get_logged_in_user(): Promise<Response> {
-  const response = fetch("/api/me", {
+  const response = fetch(API_URIS.me, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -81,7 +82,7 @@ export function server_get_logged_in_user(): Promise<Response> {
 }
 
 export function server_create_user_and_login(new_user: auth_new_user): Promise<Response> {
-  const response = fetch("/api/users/login", {
+  const response = fetch(API_URIS.create_user_login, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

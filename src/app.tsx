@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import styles from "./app.module.css";
-
 import { Home } from "./pages/home.tsx";
 import { Products } from "./pages/products.tsx";
 import { About } from "./pages/about.tsx";
@@ -11,6 +10,7 @@ import { Dashboard } from "./pages/dashboard.tsx";
 import { ProtectedRoute } from "./components/protected_route.tsx";
 import { auth_user, server_get_logged_in_user, useAuth } from "./contexts/auth.tsx";
 import { useEffect } from "react";
+import { PAGE_URIS } from "./uris.ts";
 
 function App() {
   const auth = useAuth();
@@ -53,14 +53,14 @@ function App() {
   return (
     <div className={styles.app}>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path={PAGE_URIS.home} element={<Home />} />
+        <Route path={PAGE_URIS.products} element={<Products />} />
+        <Route path={PAGE_URIS.about} element={<About />} />
+        <Route path={PAGE_URIS.contact} element={<ContactUs />} />
+        <Route path={PAGE_URIS.login} element={<Login />} />
+        <Route path={PAGE_URIS.signup} element={<Signup />} />
         <Route element={<ProtectedRoute auth={auth} />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path={PAGE_URIS.dashboard} element={<Dashboard />} />
         </Route>
       </Routes>
     </div>
