@@ -4,7 +4,7 @@ export function Dashboard() {
   return (
     <>
       <Navbar />
-      <h2>Dashboard</h2>;
+      <h2>Dashboard</h2>
     </>
   );
 }

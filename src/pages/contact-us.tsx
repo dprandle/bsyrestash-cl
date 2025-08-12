@@ -4,7 +4,7 @@ export function ContactUs() {
   return (
     <>
       <Navbar />
-      <h2>Contact Us</h2>;
+      <h2>Contact Us</h2>
     </>
   );
 }
